@@ -1,0 +1,26 @@
+# openspec.yml - Shipment Tracker Architecture & Rules
+project:
+  name: "MarsLogistics OS - AI Tracking Engine"
+  target: "MarsBased Technical Assessment"
+
+stack:
+  framework: "React 18 + Vite"
+  language: "TypeScript (Strict - Clean naming convention without I/T/E prefixes)"
+  styling: "Tailwind CSS v3 + PostCSS"
+  state: "React Context API (ShipmentContext)"
+  icons: "Lucide React"
+
+domain:
+  naming_convention: "Clean identifiers (e.g., Shipment, MilestoneEvent, RiskLevel)"
+  entities:
+    - Shipment
+    - MilestoneEvent
+    - AiAssessment
+    - Document
+  roles:
+    - OPERATIONS (Triaje de excepciones, IA Next Action, resolución de incidencias)
+    - CUSTOMER (Portal de autoservicio, Smart Timeline multimodal, avisos proactivos)
+
+quality_gates:
+  type_check: "npx tsc --noEmit (Obligatorio sin errores)"
+  git_flow: "Commits atómicos con conventional commits (feat, chore, fix)"
