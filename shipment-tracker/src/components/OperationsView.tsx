@@ -19,7 +19,7 @@ export const OperationsView: React.FC = () => {
     const [filterRisk, setFilterRisk] = useState<RiskLevel | 'ALL'>('ALL');
     const [activeModalShipment, setActiveModalShipment] = useState<Shipment | null>(null);
 
-    // IA Triage Metrics
+    // AI Triage Metrics
     const stats = useMemo(() => {
         return {
             total: shipments.length,
@@ -61,15 +61,15 @@ export const OperationsView: React.FC = () => {
                         </div>
                         <div>
                             <div className="flex items-center space-x-2">
-                                <h2 className="text-sm font-bold tracking-tight text-white">IA Exception Triage Summary</h2>
+                                <h2 className="text-sm font-bold tracking-tight text-white">AI Exception Triage Summary</h2>
                                 <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono px-1.5 py-0.5 rounded">
                                     Live Engine
                                 </span>
                             </div>
                             <p className="text-xs text-slate-400 mt-0.5">
-                                Estado del portafolio: <strong className="text-white">{stats.critical} críticos</strong>,{' '}
-                                <strong className="text-white">{stats.delayed} con retraso previsto</strong>,{' '}
-                                <strong className="text-white">{stats.onTrack} bajo control</strong>.
+                                Portfolio status: <strong className="text-white">{stats.critical} critical</strong>,{' '}
+                                <strong className="text-white">{stats.delayed} delayed</strong>,{' '}
+                                <strong className="text-white">{stats.onTrack} on track</strong>.
                             </p>
                         </div>
                     </div>
@@ -83,7 +83,7 @@ export const OperationsView: React.FC = () => {
                                 : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
                                 }`}
                         >
-                            Todos ({stats.total})
+                            All ({stats.total})
                         </button>
                         <button
                             onClick={() => setFilterRisk('CRITICAL')}
@@ -93,7 +93,7 @@ export const OperationsView: React.FC = () => {
                                 }`}
                         >
                             <AlertOctagon className="w-3.5 h-3.5" />
-                            <span>Críticos ({stats.critical})</span>
+                            <span>Critical ({stats.critical})</span>
                         </button>
                         <button
                             onClick={() => setFilterRisk('HIGH')}
@@ -103,7 +103,7 @@ export const OperationsView: React.FC = () => {
                                 }`}
                         >
                             <AlertTriangle className="w-3.5 h-3.5" />
-                            <span>Alto Riesgo ({shipments.filter((s) => s.aiAssessment.riskLevel === 'HIGH').length})</span>
+                            <span>High Risk ({shipments.filter((s) => s.aiAssessment.riskLevel === 'HIGH').length})</span>
                         </button>
                         <button
                             onClick={() => setFilterRisk('LOW')}
@@ -113,7 +113,7 @@ export const OperationsView: React.FC = () => {
                                 }`}
                         >
                             <CheckCircle className="w-3.5 h-3.5" />
-                            <span>En Hora ({shipments.filter((s) => s.aiAssessment.riskLevel === 'LOW').length})</span>
+                            <span>On Track ({shipments.filter((s) => s.aiAssessment.riskLevel === 'LOW').length})</span>
                         </button>
                     </div>
                 </div>
@@ -127,12 +127,12 @@ export const OperationsView: React.FC = () => {
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Buscar por ID, cliente, país o diagnóstico IA..."
+                        placeholder="Search by ID, client, country or AI diagnosis..."
                         className="w-full pl-9 pr-4 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all text-slate-800 placeholder-slate-400"
                     />
                 </div>
                 <div className="text-xs text-slate-500 font-medium self-end sm:self-center">
-                    Mostrando {filteredShipments.length} de {shipments.length} envíos
+                    Showing {filteredShipments.length} of {shipments.length} shipments
                 </div>
             </div>
 
@@ -142,12 +142,12 @@ export const OperationsView: React.FC = () => {
                     <table className="w-full text-left text-xs border-collapse">
                         <thead>
                             <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold tracking-wider uppercase text-[10px]">
-                                <th className="py-3 px-4">Envío / Referencia</th>
-                                <th className="py-3 px-4">Cliente & Origen</th>
-                                <th className="py-3 px-4">Ruta / Modo</th>
-                                <th className="py-3 px-4">Diagnóstico IA & Desviación</th>
-                                <th className="py-3 px-4">ETA (Conf. vs IA)</th>
-                                <th className="py-3 px-4 text-right">Acción Propuesta</th>
+                                <th className="py-3 px-4">Shipment / Reference</th>
+                                <th className="py-3 px-4">Client & Origin</th>
+                                <th className="py-3 px-4">Route / Mode</th>
+                                <th className="py-3 px-4">AI Diagnosis & Deviation</th>
+                                <th className="py-3 px-4">ETA (Conf. vs AI)</th>
+                                <th className="py-3 px-4 text-right">Proposed Action</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 text-slate-700">
@@ -168,13 +168,13 @@ export const OperationsView: React.FC = () => {
                                             <div className="text-[10px] text-slate-400 font-normal">{s.orderReference}</div>
                                         </td>
 
-                                        {/* Cliente & Origen */}
+                                        {/* Client & Origin */}
                                         <td className="py-3.5 px-4">
                                             <div className="font-semibold text-slate-900">{s.customerName}</div>
                                             <div className="text-[11px] text-slate-500 truncate max-w-48">{s.originSite}</div>
                                         </td>
 
-                                        {/* Destino y Modo */}
+                                        {/* Destination & Mode */}
                                         <td className="py-3.5 px-4 whitespace-nowrap">
                                             <div className="flex items-center space-x-1.5 font-medium text-slate-800">
                                                 {s.mode === 'SEA' ? (
@@ -187,7 +187,7 @@ export const OperationsView: React.FC = () => {
                                             <div className="text-[10px] text-slate-400 mt-0.5">{s.primaryCarrier} • {s.mode}</div>
                                         </td>
 
-                                        {/* Diagnóstico IA */}
+                                        {/* AI Diagnosis */}
                                         <td className="py-3.5 px-4 max-w-xs">
                                             <div className="flex items-center space-x-1.5 mb-1">
                                                 <span
@@ -216,10 +216,10 @@ export const OperationsView: React.FC = () => {
                                         {/* ETAs */}
                                         <td className="py-3.5 px-4 whitespace-nowrap font-mono text-[11px]">
                                             <div className="text-slate-500">
-                                                Conf: {new Date(s.aiAssessment.confirmedEta).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}
+                                                Conf: {new Date(s.aiAssessment.confirmedEta).toLocaleDateString('en-US', { day: '2-digit', month: 'short' })}
                                             </div>
                                             <div className={s.aiAssessment.isDelayed ? 'text-rose-600 font-semibold' : 'text-emerald-600'}>
-                                                IA: {new Date(s.aiAssessment.predictedEta).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}
+                                                AI: {new Date(s.aiAssessment.predictedEta).toLocaleDateString('en-US', { day: '2-digit', month: 'short' })}
                                             </div>
                                         </td>
 
@@ -239,7 +239,7 @@ export const OperationsView: React.FC = () => {
                                             ) : (
                                                 <span className="inline-flex items-center text-slate-400 text-xs italic">
                                                     <Clock className="w-3.5 h-3.5 mr-1" />
-                                                    Monitoreo
+                                                    Monitoring
                                                 </span>
                                             )}
                                         </td>
@@ -251,7 +251,7 @@ export const OperationsView: React.FC = () => {
                 </div>
             </div>
 
-            {/* IA Action Modal */}
+            {/* AI Action Modal */}
             {activeModalShipment && (
                 <ActionModal
                     shipment={activeModalShipment}

@@ -29,7 +29,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({ shipment, onClose }) =
                 <div className="px-6 py-4 bg-slate-900 text-white flex justify-between items-center">
                     <div className="flex items-center space-x-2">
                         <span className="text-xs font-mono uppercase bg-blue-600 px-2 py-0.5 rounded text-white font-semibold">
-                            IA Next Action
+                            AI Next Action
                         </span>
                         <span className="font-semibold text-sm">{shipment.id}</span>
                     </div>
@@ -47,7 +47,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({ shipment, onClose }) =
                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-start space-x-2.5">
                         <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                         <div className="text-xs text-amber-800">
-                            <span className="font-semibold">Diagnóstico: </span>
+                            <span className="font-semibold">Diagnosis: </span>
                             {shipment.aiAssessment.summaryText}
                         </div>
                     </div>
@@ -55,11 +55,11 @@ export const ActionModal: React.FC<ActionModalProps> = ({ shipment, onClose }) =
                     {action.prefilledPayload && (
                         <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 space-y-2">
                             <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block">
-                                Borrador Automático Asistido
+                                Assisted Automatic Draft
                             </span>
                             {action.prefilledPayload.emailSubject && (
                                 <div className="text-xs">
-                                    <span className="text-slate-500 font-medium">Asunto: </span>
+                                    <span className="text-slate-500 font-medium">Subject: </span>
                                     <span className="text-slate-800 font-semibold">{action.prefilledPayload.emailSubject}</span>
                                 </div>
                             )}
@@ -71,7 +71,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({ shipment, onClose }) =
                             {action.prefilledPayload.requiredDocType && (
                                 <div className="flex items-center space-x-2 text-xs text-blue-700 bg-blue-50 p-2 rounded border border-blue-200 font-medium">
                                     <FileUp className="w-4 h-4" />
-                                    <span>Documento requerido: {action.prefilledPayload.requiredDocType}</span>
+                                    <span>Required Document: {action.prefilledPayload.requiredDocType}</span>
                                 </div>
                             )}
                         </div>
@@ -80,7 +80,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({ shipment, onClose }) =
                     {isSuccess ? (
                         <div className="flex items-center justify-center space-x-2 py-3 text-emerald-600 bg-emerald-50 rounded-lg border border-emerald-200 font-semibold text-xs">
                             <CheckCircle2 className="w-4 h-4" />
-                            <span>Acción ejecutada e incidencia mitigada en el grafo</span>
+                            <span>Action executed and exception mitigated in graph</span>
                         </div>
                     ) : (
                         <div className="flex justify-end space-x-2 pt-2">
@@ -88,14 +88,14 @@ export const ActionModal: React.FC<ActionModalProps> = ({ shipment, onClose }) =
                                 onClick={onClose}
                                 className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
                             >
-                                Cancelar
+                                Cancel
                             </button>
                             <button
                                 onClick={handleExecute}
                                 className="flex items-center space-x-1.5 px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors"
                             >
                                 <Send className="w-3.5 h-3.5" />
-                                <span>Aprobar y Ejecutar Acción</span>
+                                <span>Approve and Execute Action</span>
                             </button>
                         </div>
                     )}

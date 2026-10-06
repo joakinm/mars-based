@@ -1,3 +1,4 @@
+// src/context/ShipmentContext.tsx
 import React, { createContext, useContext, useState, type ReactNode } from 'react';
 import type { Shipment, UserRole } from '../types/shipment';
 import { MOCK_SHIPMENTS } from '../data/mockShipments';
@@ -19,7 +20,7 @@ const ShipmentContext = createContext<ShipmentContextType | undefined>(undefined
 export const ShipmentProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [role, setRole] = useState<UserRole>('OPERATIONS');
     const [shipments, setShipments] = useState<Shipment[]>(MOCK_SHIPMENTS);
-    const [selectedShipmentId, setSelectedShipmentId] = useState<string | null>('SHP-8921-EU'); // Seleccionado por defecto el caso de aduanas
+    const [selectedShipmentId, setSelectedShipmentId] = useState<string | null>('SHP-8921-EU'); // Default selected customs hold case
     const [searchQuery, setSearchQuery] = useState<string>('');
 
     const selectedShipment = shipments.find((s) => s.id === selectedShipmentId) || null;
@@ -37,7 +38,7 @@ export const ShipmentProvider: React.FC<{ children: ReactNode }> = ({ children }
                         isDelayed: false,
                         predictedDelayHours: 0,
                         predictedEta: s.aiAssessment.confirmedEta,
-                        summaryText: 'Incidencia resuelta. Tránsito reanudado conforme al itinerario estándar.',
+                        summaryText: 'Exception resolved. Transit resumed according to standard itinerary.',
                         recommendedAction: undefined,
                     },
                 };
@@ -67,7 +68,7 @@ export const ShipmentProvider: React.FC<{ children: ReactNode }> = ({ children }
 export const useShipments = () => {
     const context = useContext(ShipmentContext);
     if (!context) {
-        throw new Error('useShipments debe usarse dentro de un ShipmentProvider');
+        throw new Error('useShipments must be used within a ShipmentProvider');
     }
     return context;
 };

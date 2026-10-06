@@ -1,15 +1,16 @@
+// src/data/mockShipments.ts
 import type { Shipment } from '../types/shipment';
 
 export const MOCK_SHIPMENTS: Shipment[] = [
-    // 1. Caso Crítico: Retención en Aduanas (Multimodal Internacional)
+    // 1. Critical Case: Customs Hold (International Multimodal)
     {
         id: 'SHP-8921-EU',
         orderReference: 'ORD-2026-4011',
         customerId: 'CUST-ALSTOM',
         customerName: 'Alstom Transport SA',
-        originSite: 'Planta Industrial Martorell (ES)',
+        originSite: 'Martorell Industrial Plant (ES)',
         destinationCity: 'Rotterdam',
-        destinationCountry: 'Países Bajos',
+        destinationCountry: 'Netherlands',
         mode: 'MULTIMODAL',
         currentStatus: 'HELD',
         primaryCarrier: 'Maersk Logistics',
@@ -22,29 +23,29 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             confirmedEta: '2026-10-08T14:00:00Z',
             predictedEta: '2026-10-11T16:00:00Z',
             exceptionReason: 'CUSTOMS_HOLD',
-            summaryText: 'Carga retenida en Terminal Maasvlakte por discrepancia en factura arancelaria comercial. Riesgo de penalización portuaria.',
+            summaryText: 'Cargo held at Maasvlakte Terminal due to commercial tariff invoice discrepancy. Port penalty risk.',
             recommendedAction: {
                 actionType: 'UPLOAD_DOCS',
-                label: 'Subsanar Declaración Arancelaria',
-                description: 'Adjuntar versión corregida de la factura comercial (DUA) para desbloqueo aduanero inmediato.',
+                label: 'Rectify Tariff Declaration',
+                description: 'Attach corrected commercial invoice (DUA) for immediate customs release.',
                 prefilledPayload: {
                     requiredDocType: 'CUSTOMS_DECLARATION',
-                    emailSubject: 'Urgente: Desbloqueo aduanero SHP-8921-EU - Documentación subsanada',
-                    emailBody: 'Estimado equipo de aduanas, adjuntamos la factura comercial corregida para liberar el contenedor MRKU-9921.'
+                    emailSubject: 'Urgent: Customs clearance SHP-8921-EU - Corrected documentation',
+                    emailBody: 'Dear customs team, attached is the corrected commercial invoice to release container MRKU-9921.'
                 }
             }
         },
         documents: [
-            { id: 'DOC-1', title: 'Factura Comercial Proforma', type: 'COMMERCIAL_INVOICE', status: 'VERIFIED', uploadedAt: '2026-10-01T10:00:00Z' },
-            { id: 'DOC-2', title: 'Declaración Aduanera DUA', type: 'CUSTOMS_DECLARATION', status: 'PENDING_REVIEW' },
+            { id: 'DOC-1', title: 'Proforma Commercial Invoice', type: 'COMMERCIAL_INVOICE', status: 'VERIFIED', uploadedAt: '2026-10-01T10:00:00Z' },
+            { id: 'DOC-2', title: 'Customs Declaration (DUA)', type: 'CUSTOMS_DECLARATION', status: 'PENDING_REVIEW' },
             { id: 'DOC-3', title: 'Bill of Lading MSK-0921', type: 'BILL_OF_LADING', status: 'VERIFIED', uploadedAt: '2026-10-02T16:30:00Z' }
         ],
         events: [
             {
                 id: 'EV-101',
                 category: 'ORIGIN_DISPATCH',
-                name: 'Salida de fábrica',
-                location: 'Martorell, España',
+                name: 'Factory dispatch',
+                location: 'Martorell, Spain',
                 timestamp: '2026-10-01T08:30:00Z',
                 status: 'COMPLETED',
                 carrierName: 'Trans-Iberia Road',
@@ -53,8 +54,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-102',
                 category: 'PORT_GATE_IN',
-                name: 'Ingreso a terminal portuaria',
-                location: 'Puerto de Valencia, España',
+                name: 'Port terminal gate-in',
+                location: 'Port of Valencia, Spain',
                 timestamp: '2026-10-02T14:00:00Z',
                 status: 'COMPLETED',
                 carrierName: 'Noatum Container Terminal',
@@ -63,8 +64,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-103',
                 category: 'VESSEL_TRANSIT',
-                name: 'Travesía marítima en buque Maersk Mc-Kinney',
-                location: 'Mar Cantábrico / Canal de la Mancha',
+                name: 'Sea transit aboard Maersk Mc-Kinney vessel',
+                location: 'Bay of Biscay / English Channel',
                 timestamp: '2026-10-04T18:00:00Z',
                 status: 'COMPLETED',
                 carrierName: 'Maersk Line',
@@ -73,8 +74,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-104',
                 category: 'CUSTOMS_CLEARANCE',
-                name: 'Inspección física y retención aduanera',
-                location: 'Rotterdam Port Terminal, Países Bajos',
+                name: 'Physical inspection and customs hold',
+                location: 'Rotterdam Port Terminal, Netherlands',
                 timestamp: '2026-10-06T07:45:00Z',
                 status: 'FAILED',
                 carrierName: 'Rotterdam Customs Authority',
@@ -83,7 +84,7 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-105',
                 category: 'LAST_MILE',
-                name: 'Entrega final en nave de cliente',
+                name: 'Final delivery at customer facility',
                 location: 'Rotterdam Distribution Park',
                 timestamp: '2026-10-08T14:00:00Z',
                 status: 'PENDING',
@@ -93,15 +94,15 @@ export const MOCK_SHIPMENTS: Shipment[] = [
         ]
     },
 
-    // 2. Desviación Predictiva Silenciosa (Marítimo en Tránsito con retraso por congestión)
+    // 2. Silent Predictive Deviation (Maritime transit delayed due to congestion)
     {
         id: 'SHP-7734-OC',
         orderReference: 'ORD-2026-3980',
         customerId: 'CUST-SIEMENS',
         customerName: 'Siemens Energy AG',
-        originSite: 'Hub Logístico Amberes (BE)',
-        destinationCity: 'Singapur',
-        destinationCountry: 'Singapur',
+        originSite: 'Antwerp Logistics Hub (BE)',
+        destinationCity: 'Singapore',
+        destinationCountry: 'Singapore',
         mode: 'SEA',
         currentStatus: 'IN_TRANSIT',
         primaryCarrier: 'CMA CGM',
@@ -114,27 +115,27 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             confirmedEta: '2026-10-18T10:00:00Z',
             predictedEta: '2026-10-20T12:00:00Z',
             exceptionReason: 'PORT_CONGESTION',
-            summaryText: 'El operador mantiene el ETA original en su portal, pero los patrones de atraque en Port of Singapore predicen 48h de espera en fondeadero.',
+            summaryText: 'Operator maintains original ETA in portal, but berth patterns at Port of Singapore predict 48h anchorage wait.',
             recommendedAction: {
                 actionType: 'NOTIFY_CUSTOMER',
-                label: 'Emitir Aviso Proactivo al Cliente',
-                description: 'Informar al cliente sobre la desviación prevista antes de que venza la fecha comprometida original.',
+                label: 'Issue Proactive Customer Notice',
+                description: 'Notify customer about predicted deviation before original committed date expires.',
                 prefilledPayload: {
-                    emailSubject: 'Actualización sobre su envío SHP-7734-OC - Ajuste de fecha de llegada',
-                    emailBody: 'Estimado equipo de Siemens, nuestros sistemas estiman un retraso de 48 horas debido a congestión de atraque en Singapur. Nueva fecha estimada: 20 de Octubre.'
+                    emailSubject: 'Update regarding your shipment SHP-7734-OC - ETA adjustment',
+                    emailBody: 'Dear Siemens team, our systems estimate a 48-hour delay due to berth congestion in Singapore. New estimated date: October 20.'
                 }
             }
         },
         documents: [
             { id: 'DOC-4', title: 'Sea Waybill CMA-7734', type: 'BILL_OF_LADING', status: 'VERIFIED', uploadedAt: '2026-09-28T11:00:00Z' },
-            { id: 'DOC-5', title: 'Certificado de Origen CE', type: 'CUSTOMS_DECLARATION', status: 'VERIFIED', uploadedAt: '2026-09-28T11:30:00Z' }
+            { id: 'DOC-5', title: 'Certificate of Origin EC', type: 'CUSTOMS_DECLARATION', status: 'VERIFIED', uploadedAt: '2026-09-28T11:30:00Z' }
         ],
         events: [
             {
                 id: 'EV-201',
                 category: 'PORT_GATE_IN',
-                name: 'Carga de contenedor en puerto Amberes',
-                location: 'Amberes, Bélgica',
+                name: 'Container loading at Antwerp port',
+                location: 'Antwerp, Belgium',
                 timestamp: '2026-09-29T06:00:00Z',
                 status: 'COMPLETED',
                 carrierName: 'CMA CGM',
@@ -143,8 +144,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-202',
                 category: 'VESSEL_TRANSIT',
-                name: 'Tránsito marítimo Mar Rojo / Océano Índico',
-                location: 'Golfo de Adén',
+                name: 'Maritime transit Red Sea / Indian Ocean',
+                location: 'Gulf of Aden',
                 timestamp: '2026-10-05T22:00:00Z',
                 status: 'IN_PROGRESS',
                 carrierName: 'CMA CGM Palais',
@@ -153,8 +154,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-203',
                 category: 'PORT_GATE_OUT',
-                name: 'Descarga y desaduanamiento',
-                location: 'Pasir Panjang Terminal, Singapur',
+                name: 'Discharge and customs clearance',
+                location: 'Pasir Panjang Terminal, Singapore',
                 timestamp: '2026-10-18T10:00:00Z',
                 status: 'PENDING',
                 carrierName: 'PSA Singapore',
@@ -163,19 +164,19 @@ export const MOCK_SHIPMENTS: Shipment[] = [
         ]
     },
 
-    // 3. Telemetría Congelada / Pérdida de Señal (Stale Data Alert)
+    // 3. Frozen Telemetry / Signal Loss (Stale Data Alert)
     {
         id: 'SHP-6210-RD',
         orderReference: 'ORD-2026-5120',
         customerId: 'CUST-SCHNEIDER',
         customerName: 'Schneider Electric SAS',
-        originSite: 'Centro de Distribución Lyon (FR)',
-        destinationCity: 'Milán',
-        destinationCountry: 'Italia',
+        originSite: 'Lyon Distribution Center (FR)',
+        destinationCity: 'Milan',
+        destinationCountry: 'Italy',
         mode: 'ROAD',
         currentStatus: 'EXCEPTION',
         primaryCarrier: 'DB Schenker',
-        lastTelemetryPing: '2026-10-04T14:20:00Z', // 45+ horas sin telemetría
+        lastTelemetryPing: '2026-10-04T14:20:00Z',
         aiAssessment: {
             riskLevel: 'HIGH',
             confidenceScore: 0.91,
@@ -184,26 +185,26 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             confirmedEta: '2026-10-05T17:00:00Z',
             predictedEta: '2026-10-07T12:00:00Z',
             exceptionReason: 'STALE_DATA',
-            summaryText: 'Sin actualización de posición GPS ni telemetría EDI desde hace 44 horas tras cruce de frontera en Túnel de Fréjus.',
+            summaryText: 'No GPS position update or EDI telemetry for 44 hours after border crossing at Fréjus Tunnel.',
             recommendedAction: {
                 actionType: 'ESCALATE_CARRIER',
-                label: 'Escalar Incidencia a DB Schenker',
-                description: 'Exigir reporte de posición inmediato y estado del conductor a la central de tráfico internacional.',
+                label: 'Escalate Incident to DB Schenker',
+                description: 'Demand immediate position report and driver status from international traffic control.',
                 prefilledPayload: {
-                    emailSubject: 'URGENTE: Falta de telemetría / Envío vencido SHP-6210-RD',
-                    emailBody: 'Solicitamos localización manual urgente y confirmación del estado del camión matrícula FR-890-ZZ.'
+                    emailSubject: 'URGENT: Missing telemetry / Overdue shipment SHP-6210-RD',
+                    emailBody: 'We request urgent manual location and confirmation of truck status license plate FR-890-ZZ.'
                 }
             }
         },
         documents: [
-            { id: 'DOC-6', title: 'Carta de Porte Internacional CMR', type: 'BILL_OF_LADING', status: 'VERIFIED', uploadedAt: '2026-10-04T08:00:00Z' }
+            { id: 'DOC-6', title: 'International Consignment Note CMR', type: 'BILL_OF_LADING', status: 'VERIFIED', uploadedAt: '2026-10-04T08:00:00Z' }
         ],
         events: [
             {
                 id: 'EV-301',
                 category: 'ORIGIN_DISPATCH',
-                name: 'Carga completada en Lyon',
-                location: 'Lyon, Francia',
+                name: 'Loading completed in Lyon',
+                location: 'Lyon, France',
                 timestamp: '2026-10-04T09:00:00Z',
                 status: 'COMPLETED',
                 carrierName: 'DB Schenker France',
@@ -212,8 +213,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-302',
                 category: 'ROAD_TRANSFER',
-                name: 'Tránsito alpino transfronterizo',
-                location: 'Túnel de Fréjus (FR-IT)',
+                name: 'Cross-border alpine transit',
+                location: 'Fréjus Tunnel (FR-IT)',
                 timestamp: '2026-10-04T14:20:00Z',
                 status: 'IN_PROGRESS',
                 carrierName: 'DB Schenker Italy',
@@ -222,8 +223,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-303',
                 category: 'DELIVERY',
-                name: 'Entrega en Almacén Central Milán',
-                location: 'Milán, Italia',
+                name: 'Delivery at Milan Central Warehouse',
+                location: 'Milan, Italy',
                 timestamp: '2026-10-05T17:00:00Z',
                 status: 'PENDING',
                 carrierName: 'DB Schenker Italy',
@@ -232,15 +233,15 @@ export const MOCK_SHIPMENTS: Shipment[] = [
         ]
     },
 
-    // 4. Tránsito Terrestre Doméstico Operando en Tiempo Normal (Bajo Riesgo)
+    // 4. Domestic Road Transit Operating Normally (Low Risk)
     {
         id: 'SHP-4019-ES',
         orderReference: 'ORD-2026-6102',
         customerId: 'CUST-SEAT',
         customerName: 'SEAT Componentes SA',
-        originSite: 'Planta Industrial Martorell (ES)',
+        originSite: 'Martorell Industrial Plant (ES)',
         destinationCity: 'Zaragoza',
-        destinationCountry: 'España',
+        destinationCountry: 'Spain',
         mode: 'ROAD',
         currentStatus: 'IN_TRANSIT',
         primaryCarrier: 'DHL Freight',
@@ -252,22 +253,22 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             predictedDelayHours: 0,
             confirmedEta: '2026-10-06T16:30:00Z',
             predictedEta: '2026-10-06T16:15:00Z',
-            summaryText: 'Tránsito por autovía A-2 sin incidencias de tráfico ni meteorología. Proyección de llegada en hora.',
+            summaryText: 'Transit along A-2 highway without traffic or weather incidents. On-time arrival projection.',
             recommendedAction: {
                 actionType: 'MONITOR',
-                label: 'Monitoreo Automático Activo',
-                description: 'No se requiere intervención manual de operaciones.'
+                label: 'Active Automatic Monitoring',
+                description: 'No manual operations intervention required.'
             }
         },
         documents: [
-            { id: 'DOC-7', title: 'Albarán de Salida Digital', type: 'PACKING_LIST', status: 'VERIFIED', uploadedAt: '2026-10-06T06:00:00Z' }
+            { id: 'DOC-7', title: 'Digital Dispatch Note', type: 'PACKING_LIST', status: 'VERIFIED', uploadedAt: '2026-10-06T06:00:00Z' }
         ],
         events: [
             {
                 id: 'EV-401',
                 category: 'ORIGIN_DISPATCH',
-                name: 'Expedición desde Martorell',
-                location: 'Martorell, España',
+                name: 'Dispatch from Martorell',
+                location: 'Martorell, Spain',
                 timestamp: '2026-10-06T07:00:00Z',
                 status: 'COMPLETED',
                 carrierName: 'DHL Freight ES',
@@ -276,8 +277,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-402',
                 category: 'ROAD_TRANSFER',
-                name: 'En ruta por A-2 Km 210',
-                location: 'Calatayud, España',
+                name: 'En route via A-2 Km 210',
+                location: 'Calatayud, Spain',
                 timestamp: '2026-10-06T10:30:00Z',
                 status: 'IN_PROGRESS',
                 carrierName: 'DHL Freight ES',
@@ -286,8 +287,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-403',
                 category: 'DELIVERY',
-                name: 'Recepción en planta Figueruelas',
-                location: 'Zaragoza, España',
+                name: 'Reception at Figueruelas plant',
+                location: 'Zaragoza, Spain',
                 timestamp: '2026-10-06T16:30:00Z',
                 status: 'PENDING',
                 carrierName: 'DHL Freight ES',
@@ -296,15 +297,15 @@ export const MOCK_SHIPMENTS: Shipment[] = [
         ]
     },
 
-    // 5. Riesgo Moderado por Alerta Climatológica en Puerto
+    // 5. Moderate Risk Due to Port Weather Alert
     {
         id: 'SHP-5591-MM',
         orderReference: 'ORD-2026-4419',
         customerId: 'CUST-BASF',
         customerName: 'BASF Coatings GmbH',
-        originSite: 'Planta Química Tarragona (ES)',
-        destinationCity: 'Hamburgo',
-        destinationCountry: 'Alemania',
+        originSite: 'Tarragona Chemical Plant (ES)',
+        destinationCity: 'Hamburg',
+        destinationCountry: 'Germany',
         mode: 'MULTIMODAL',
         currentStatus: 'IN_TRANSIT',
         primaryCarrier: 'Kuehne+Nagel',
@@ -317,23 +318,23 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             confirmedEta: '2026-10-09T08:00:00Z',
             predictedEta: '2026-10-09T20:00:00Z',
             exceptionReason: 'WEATHER',
-            summaryText: 'Aviso de temporal de viento en Mar del Norte puede demorar 12h la maniobra de prácticos en Puerto de Hamburgo.',
+            summaryText: 'Gale warning in North Sea may delay pilotage maneuvers by 12h at Port of Hamburg.',
             recommendedAction: {
                 actionType: 'MONITOR',
-                label: 'Seguimiento Climatológico',
-                description: 'Monitorear partes meteorológicos de la capitanía marítima del Elba.'
+                label: 'Climatological Tracking',
+                description: 'Monitor weather forecasts from the Elbe harbor master.'
             }
         },
         documents: [
-            { id: 'DOC-8', title: 'Ficha de Seguridad Químicos', type: 'PACKING_LIST', status: 'VERIFIED', uploadedAt: '2026-10-03T09:00:00Z' },
+            { id: 'DOC-8', title: 'Chemical Safety Data Sheet', type: 'PACKING_LIST', status: 'VERIFIED', uploadedAt: '2026-10-03T09:00:00Z' },
             { id: 'DOC-9', title: 'Multimodal Bill of Lading', type: 'BILL_OF_LADING', status: 'VERIFIED', uploadedAt: '2026-10-03T11:00:00Z' }
         ],
         events: [
             {
                 id: 'EV-501',
                 category: 'ORIGIN_DISPATCH',
-                name: 'Salida de planta química',
-                location: 'Tarragona, España',
+                name: 'Chemical plant dispatch',
+                location: 'Tarragona, Spain',
                 timestamp: '2026-10-03T10:00:00Z',
                 status: 'COMPLETED',
                 carrierName: 'Kuehne+Nagel Road',
@@ -342,8 +343,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-502',
                 category: 'PORT_GATE_IN',
-                name: 'Embarque en buque feeder',
-                location: 'Puerto de Bilbao, España',
+                name: 'Feeder vessel boarding',
+                location: 'Port of Bilbao, Spain',
                 timestamp: '2026-10-04T16:00:00Z',
                 status: 'COMPLETED',
                 carrierName: 'KN Maritime',
@@ -352,8 +353,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-503',
                 category: 'VESSEL_TRANSIT',
-                name: 'Tránsito marítimo canal inglés',
-                location: 'Costa francesa',
+                name: 'Maritime transit English Channel',
+                location: 'French Coast',
                 timestamp: '2026-10-06T08:30:00Z',
                 status: 'IN_PROGRESS',
                 carrierName: 'KN Maritime',
@@ -362,8 +363,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-504',
                 category: 'DELIVERY',
-                name: 'Entrega final terminal Hamburgo',
-                location: 'Hamburgo, Alemania',
+                name: 'Final delivery Hamburg terminal',
+                location: 'Hamburg, Germany',
                 timestamp: '2026-10-09T08:00:00Z',
                 status: 'PENDING',
                 carrierName: 'Kuehne+Nagel DE',
@@ -372,15 +373,15 @@ export const MOCK_SHIPMENTS: Shipment[] = [
         ]
     },
 
-    // 6. Envío Entregado Satisfactoriamente (Historial / Línea Base)
+    // 6. Successfully Delivered Shipment (History / Baseline)
     {
         id: 'SHP-1088-OK',
         orderReference: 'ORD-2026-1100',
         customerId: 'CUST-ALSTOM',
         customerName: 'Alstom Transport SA',
-        originSite: 'Planta Industrial Martorell (ES)',
-        destinationCity: 'Burdeos',
-        destinationCountry: 'Francia',
+        originSite: 'Martorell Industrial Plant (ES)',
+        destinationCity: 'Bordeaux',
+        destinationCountry: 'France',
         mode: 'ROAD',
         currentStatus: 'DELIVERED',
         primaryCarrier: 'Geodis',
@@ -392,22 +393,22 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             predictedDelayHours: 0,
             confirmedEta: '2026-10-05T15:00:00Z',
             predictedEta: '2026-10-05T15:00:00Z',
-            summaryText: 'Entrega realizada con firma digital en albarán sin incidencias notificadas.',
+            summaryText: 'Delivery completed with digital signature on delivery note with no incidents reported.',
             recommendedAction: {
                 actionType: 'MONITOR',
-                label: 'Cerrado',
-                description: 'Envío completado exitosamente.'
+                label: 'Closed',
+                description: 'Shipment successfully completed.'
             }
         },
         documents: [
-            { id: 'DOC-10', title: 'Albarán Firmado (POD)', type: 'PACKING_LIST', status: 'VERIFIED', uploadedAt: '2026-10-05T15:35:00Z' }
+            { id: 'DOC-10', title: 'Signed Delivery Note (POD)', type: 'PACKING_LIST', status: 'VERIFIED', uploadedAt: '2026-10-05T15:35:00Z' }
         ],
         events: [
             {
                 id: 'EV-601',
                 category: 'ORIGIN_DISPATCH',
-                name: 'Salida de Martorell',
-                location: 'Martorell, España',
+                name: 'Departure from Martorell',
+                location: 'Martorell, Spain',
                 timestamp: '2026-10-04T08:00:00Z',
                 status: 'COMPLETED',
                 carrierName: 'Geodis Road',
@@ -416,8 +417,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-602',
                 category: 'ROAD_TRANSFER',
-                name: 'Tránsito fronterizo La Jonquera',
-                location: 'Frontera ES-FR',
+                name: 'La Jonquera border transit',
+                location: 'ES-FR Border',
                 timestamp: '2026-10-04T12:00:00Z',
                 status: 'COMPLETED',
                 carrierName: 'Geodis France',
@@ -426,8 +427,8 @@ export const MOCK_SHIPMENTS: Shipment[] = [
             {
                 id: 'EV-603',
                 category: 'DELIVERY',
-                name: 'Entregado en planta Burdeos',
-                location: 'Burdeos, Francia',
+                name: 'Delivered at Bordeaux plant',
+                location: 'Bordeaux, France',
                 timestamp: '2026-10-05T15:00:00Z',
                 status: 'COMPLETED',
                 carrierName: 'Geodis France',
