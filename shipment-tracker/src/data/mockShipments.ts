@@ -1,4 +1,4 @@
-import { Shipment } from '../types/shipment';
+import type { Shipment } from '../types/shipment';
 
 export const MOCK_SHIPMENTS: Shipment[] = [
     // 1. Caso Crítico: Retención en Aduanas (Multimodal Internacional)
