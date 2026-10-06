@@ -29,7 +29,3 @@ dist-ssr
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
-
-# Custom
-package-lock.json
-
