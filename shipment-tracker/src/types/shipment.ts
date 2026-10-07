@@ -2,15 +2,14 @@
 
 export type UserRole = 'CUSTOMER' | 'OPERATIONS';
 
-export type TransportMode = 'ROAD' | 'SEA' | 'MULTIMODAL';
+export type TransportMode = 'ROAD' | 'SEA' | 'AIR' | 'RAIL' | 'MULTIMODAL';
 
 export type ShipmentStatus =
-    | 'DRAFT'
+    | 'PENDING'
     | 'IN_TRANSIT'
     | 'HELD'
-    | 'OUT_FOR_DELIVERY'
-    | 'DELIVERED'
-    | 'EXCEPTION';
+    | 'EXCEPTION'
+    | 'DELIVERED';
 
 export type MilestoneCategory =
     | 'ORIGIN_DISPATCH'
@@ -60,7 +59,7 @@ export interface DocumentItem {
     id: string;
     title: string;
     type: 'COMMERCIAL_INVOICE' | 'BILL_OF_LADING' | 'CUSTOMS_DECLARATION' | 'PACKING_LIST';
-    status: 'VERIFIED' | 'MISSING' | 'PENDING_REVIEW';
+    status: 'VERIFIED' | 'PENDING_REVIEW' | 'REJECTED';
     uploadedAt?: string;
 }
 
