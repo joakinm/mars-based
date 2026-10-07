@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import type { Shipment } from '../types/shipment';
 import { useShipments } from '../context/ShipmentContext';
-import { X, Send, CheckCircle2, AlertTriangle, FileUp } from 'lucide-react';
+import { X, Send, AlertTriangle, FileUp } from 'lucide-react';
 
 interface ActionModalProps {
     shipment: Shipment;
@@ -10,17 +10,23 @@ interface ActionModalProps {
 
 export const ActionModal: React.FC<ActionModalProps> = ({ shipment, onClose }) => {
     const { resolveException } = useShipments();
-    const [isSuccess, setIsSuccess] = useState(false);
     const action = shipment.aiAssessment.recommendedAction;
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                onClose();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [onClose]);
 
     if (!action) return null;
 
     const handleExecute = () => {
-        setIsSuccess(true);
-        setTimeout(() => {
-            resolveException(shipment.id);
-            onClose();
-        }, 1200);
+        resolveException(shipment.id);
+        onClose();
     };
 
     return (
@@ -77,28 +83,21 @@ export const ActionModal: React.FC<ActionModalProps> = ({ shipment, onClose }) =
                         </div>
                     )}
 
-                    {isSuccess ? (
-                        <div className="flex items-center justify-center space-x-2 py-3 text-emerald-600 bg-emerald-50 rounded-lg border border-emerald-200 font-semibold text-xs">
-                            <CheckCircle2 className="w-4 h-4" />
-                            <span>Action executed and exception mitigated in graph</span>
-                        </div>
-                    ) : (
-                        <div className="flex justify-end space-x-2 pt-2">
-                            <button
-                                onClick={onClose}
-                                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleExecute}
-                                className="flex items-center space-x-1.5 px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors"
-                            >
-                                <Send className="w-3.5 h-3.5" />
-                                <span>Approve and Execute Action</span>
-                            </button>
-                        </div>
-                    )}
+                    <div className="flex justify-end space-x-2 pt-2">
+                        <button
+                            onClick={onClose}
+                            className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleExecute}
+                            className="flex items-center space-x-1.5 px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors"
+                        >
+                            <Send className="w-3.5 h-3.5" />
+                            <span>Approve and Apply Action</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

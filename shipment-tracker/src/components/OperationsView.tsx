@@ -151,101 +151,137 @@ export const OperationsView: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 text-slate-700">
-                            {filteredShipments.map((s) => {
-                                const isSelected = selectedShipmentId === s.id;
-                                const risk = s.aiAssessment.riskLevel;
+                            {filteredShipments.length === 0 ? (
+                                <tr>
+                                    <td colSpan={6} className="py-12 text-center text-slate-500">
+                                        <p className="text-sm font-semibold text-slate-700">No shipments found</p>
+                                        <p className="text-xs text-slate-400 mt-1">No matching shipments found for your search criteria.</p>
+                                    </td>
+                                </tr>
+                            ) : (
+                                filteredShipments.map((s) => {
+                                    const isSelected = selectedShipmentId === s.id;
+                                    const risk = s.aiAssessment.riskLevel;
 
-                                return (
-                                    <tr
-                                        key={s.id}
-                                        onClick={() => setSelectedShipmentId(s.id)}
-                                        className={`cursor-pointer transition-colors hover:bg-slate-50/80 ${isSelected ? 'bg-blue-50/50 font-medium' : ''
-                                            }`}
-                                    >
-                                        {/* ID */}
-                                        <td className="py-3.5 px-4 font-mono font-semibold text-slate-900 whitespace-nowrap">
-                                            <div>{s.id}</div>
-                                            <div className="text-[10px] text-slate-400 font-normal">{s.orderReference}</div>
-                                        </td>
-
-                                        {/* Client & Origin */}
-                                        <td className="py-3.5 px-4">
-                                            <div className="font-semibold text-slate-900">{s.customerName}</div>
-                                            <div className="text-[11px] text-slate-500 truncate max-w-48">{s.originSite}</div>
-                                        </td>
-
-                                        {/* Destination & Mode */}
-                                        <td className="py-3.5 px-4 whitespace-nowrap">
-                                            <div className="flex items-center space-x-1.5 font-medium text-slate-800">
-                                                {s.mode === 'SEA' ? (
-                                                    <Ship className="w-3.5 h-3.5 text-blue-600" />
-                                                ) : (
-                                                    <Truck className="w-3.5 h-3.5 text-emerald-600" />
-                                                )}
-                                                <span>{s.destinationCity}, {s.destinationCountry}</span>
-                                            </div>
-                                            <div className="text-[10px] text-slate-400 mt-0.5">{s.primaryCarrier} • {s.mode}</div>
-                                        </td>
-
-                                        {/* AI Diagnosis */}
-                                        <td className="py-3.5 px-4 max-w-xs">
-                                            <div className="flex items-center space-x-1.5 mb-1">
-                                                <span
-                                                    className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${risk === 'CRITICAL'
-                                                        ? 'bg-red-100 text-red-800 border border-red-200'
-                                                        : risk === 'HIGH'
-                                                            ? 'bg-amber-100 text-amber-800 border border-amber-200'
-                                                            : risk === 'MEDIUM'
-                                                                ? 'bg-yellow-100 text-yellow-800 border border-yellow-200'
-                                                                : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                                    return (
+                                        <tr
+                                            key={s.id}
+                                            onClick={() => setSelectedShipmentId(s.id)}
+                                            className={`cursor-pointer transition-colors hover:bg-slate-50/80 ${isSelected ? 'bg-blue-50/50 font-medium' : ''
+                                                }`}
+                                        >
+                                            {/* ID & Status */}
+                                            <td className="py-3.5 px-4 font-mono font-semibold text-slate-900 whitespace-nowrap">
+                                                <div className="flex items-center space-x-2">
+                                                    <span>{s.id}</span>
+                                                    <span
+                                                        className={`text-[9px] uppercase px-1.5 py-0.5 rounded font-mono font-semibold ${
+                                                            s.currentStatus === 'HELD'
+                                                                ? 'bg-red-100 text-red-800 border border-red-200'
+                                                                : s.currentStatus === 'EXCEPTION'
+                                                                ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                                                                : s.currentStatus === 'IN_TRANSIT'
+                                                                ? 'bg-blue-100 text-blue-800 border border-blue-200'
+                                                                : s.currentStatus === 'DELIVERED'
+                                                                ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                                                                : 'bg-slate-100 text-slate-800 border border-slate-200'
                                                         }`}
-                                                >
-                                                    {risk}
-                                                </span>
-                                                {s.aiAssessment.isDelayed && (
-                                                    <span className="text-[10px] font-semibold text-rose-600">
-                                                        +{s.aiAssessment.predictedDelayHours}h
+                                                    >
+                                                        {s.currentStatus}
+                                                    </span>
+                                                </div>
+                                                <div className="text-[10px] text-slate-400 font-normal">{s.orderReference}</div>
+                                            </td>
+
+                                            {/* Client & Origin */}
+                                            <td className="py-3.5 px-4">
+                                                <div className="font-semibold text-slate-900">{s.customerName}</div>
+                                                <div className="text-[11px] text-slate-500 truncate max-w-48">{s.originSite}</div>
+                                            </td>
+
+                                            {/* Destination & Mode */}
+                                            <td className="py-3.5 px-4 whitespace-nowrap">
+                                                <div className="flex items-center space-x-1.5 font-medium text-slate-800">
+                                                    {s.mode === 'SEA' ? (
+                                                        <Ship className="w-3.5 h-3.5 text-blue-600" />
+                                                    ) : (
+                                                        <Truck className="w-3.5 h-3.5 text-emerald-600" />
+                                                    )}
+                                                    <span>{s.destinationCity}, {s.destinationCountry}</span>
+                                                </div>
+                                                <div className="text-[10px] text-slate-400 mt-0.5">{s.primaryCarrier} • {s.mode}</div>
+                                            </td>
+
+                                            {/* AI Diagnosis */}
+                                            <td className="py-3.5 px-4 max-w-xs">
+                                                <div className="flex flex-wrap items-center gap-1.5 mb-1">
+                                                    <span
+                                                        className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${risk === 'CRITICAL'
+                                                            ? 'bg-red-100 text-red-800 border border-red-200'
+                                                            : risk === 'HIGH'
+                                                                ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                                                                : risk === 'MEDIUM'
+                                                                    ? 'bg-yellow-100 text-yellow-800 border border-yellow-200'
+                                                                    : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                                                            }`}
+                                                    >
+                                                        {risk}
+                                                    </span>
+                                                    {s.aiAssessment.exceptionReason && (
+                                                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 font-semibold">
+                                                            {s.aiAssessment.exceptionReason}
+                                                        </span>
+                                                    )}
+                                                    {s.aiAssessment.isDelayed && (
+                                                        <span className="text-[10px] font-semibold text-rose-600">
+                                                            +{s.aiAssessment.predictedDelayHours}h
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <p className="text-[11px] text-slate-600 line-clamp-1 leading-snug">
+                                                    {s.aiAssessment.summaryText}
+                                                </p>
+                                            </td>
+
+                                            {/* ETAs */}
+                                            <td className="py-3.5 px-4 whitespace-nowrap font-mono text-[11px]">
+                                                <div className="text-slate-500">
+                                                    Conf: {new Date(s.aiAssessment.confirmedEta).toLocaleDateString('en-US', { day: '2-digit', month: 'short' })}
+                                                </div>
+                                                <div className={s.aiAssessment.isDelayed ? 'text-rose-600 font-semibold' : 'text-emerald-600'}>
+                                                    AI: {new Date(s.aiAssessment.predictedEta).toLocaleDateString('en-US', { day: '2-digit', month: 'short' })}
+                                                </div>
+                                            </td>
+
+                                            {/* CTA Next Action */}
+                                            <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                                                {s.aiAssessment.recommendedAction && s.aiAssessment.recommendedAction.actionType !== 'MONITOR' ? (
+                                                    <div className="flex flex-col items-end gap-1">
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                setActiveModalShipment(s);
+                                                            }}
+                                                            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 shadow-xs transition-colors"
+                                                        >
+                                                            <span>{s.aiAssessment.recommendedAction.label}</span>
+                                                            <ArrowRight className="w-3 h-3" />
+                                                        </button>
+                                                        <span className="text-[9px] font-mono text-slate-400 uppercase font-medium">
+                                                            {s.aiAssessment.recommendedAction.actionType}
+                                                        </span>
+                                                    </div>
+                                                ) : (
+                                                    <span className="inline-flex items-center text-slate-400 text-xs italic">
+                                                        <Clock className="w-3.5 h-3.5 mr-1" />
+                                                        Monitoring
                                                     </span>
                                                 )}
-                                            </div>
-                                            <p className="text-[11px] text-slate-600 line-clamp-1 leading-snug">
-                                                {s.aiAssessment.summaryText}
-                                            </p>
-                                        </td>
-
-                                        {/* ETAs */}
-                                        <td className="py-3.5 px-4 whitespace-nowrap font-mono text-[11px]">
-                                            <div className="text-slate-500">
-                                                Conf: {new Date(s.aiAssessment.confirmedEta).toLocaleDateString('en-US', { day: '2-digit', month: 'short' })}
-                                            </div>
-                                            <div className={s.aiAssessment.isDelayed ? 'text-rose-600 font-semibold' : 'text-emerald-600'}>
-                                                AI: {new Date(s.aiAssessment.predictedEta).toLocaleDateString('en-US', { day: '2-digit', month: 'short' })}
-                                            </div>
-                                        </td>
-
-                                        {/* CTA Next Action */}
-                                        <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                                            {s.aiAssessment.recommendedAction && s.aiAssessment.recommendedAction.actionType !== 'MONITOR' ? (
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setActiveModalShipment(s);
-                                                    }}
-                                                    className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 shadow-xs transition-colors"
-                                                >
-                                                    <span>{s.aiAssessment.recommendedAction.label}</span>
-                                                    <ArrowRight className="w-3 h-3" />
-                                                </button>
-                                            ) : (
-                                                <span className="inline-flex items-center text-slate-400 text-xs italic">
-                                                    <Clock className="w-3.5 h-3.5 mr-1" />
-                                                    Monitoring
-                                                </span>
-                                            )}
-                                        </td>
-                                    </tr>
-                                );
-                            })}
+                                            </td>
+                                        </tr>
+                                    );
+                                })
+                            )}
                         </tbody>
                     </table>
                 </div>

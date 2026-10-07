@@ -51,6 +51,8 @@ export const CustomerView: FC = () => {
                                     <div className="flex items-center space-x-2">
                                         <span className="text-xs font-mono font-bold text-slate-900">{activeShipment.id}</span>
                                         <span className="text-slate-400">•</span>
+                                        <span className="text-xs font-semibold text-slate-700">{activeShipment.customerName}</span>
+                                        <span className="text-slate-400">•</span>
                                         <span className="text-xs text-slate-500 font-medium">Ref: {activeShipment.orderReference}</span>
                                     </div>
                                     <h3 className="text-lg font-extrabold text-slate-900 mt-0.5">
@@ -68,8 +70,19 @@ export const CustomerView: FC = () => {
                                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start space-x-3">
                                     <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                                     <div className="space-y-1">
-                                        <div className="flex items-center space-x-2">
+                                        <div className="flex flex-wrap items-center gap-2">
                                             <span className="text-xs font-bold text-amber-900 uppercase">Proactive Update Notice</span>
+                                            <span
+                                                className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
+                                                    activeShipment.aiAssessment.riskLevel === 'CRITICAL'
+                                                        ? 'bg-red-100 text-red-800 border border-red-200'
+                                                        : activeShipment.aiAssessment.riskLevel === 'HIGH'
+                                                        ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                                                        : 'bg-yellow-100 text-yellow-800 border border-yellow-200'
+                                                }`}
+                                            >
+                                                {activeShipment.aiAssessment.riskLevel}
+                                            </span>
                                             <span className="text-[10px] bg-amber-200 text-amber-900 font-mono px-1.5 py-0.2 rounded font-semibold">
                                                 +{activeShipment.aiAssessment.predictedDelayHours}h Adjusted ETA
                                             </span>
@@ -108,9 +121,14 @@ export const CustomerView: FC = () => {
 
                         {/* Smart Timeline */}
                         <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs space-y-6">
-                            <div>
-                                <h4 className="text-sm font-bold text-slate-900">Smart Multimodal Timeline</h4>
-                                <p className="text-xs text-slate-500">End-to-end traceability with normalized carrier telemetry.</p>
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                <div>
+                                    <h4 className="text-sm font-bold text-slate-900">Smart Multimodal Timeline</h4>
+                                    <p className="text-xs text-slate-500">End-to-end traceability with normalized carrier telemetry.</p>
+                                </div>
+                                <div className="text-[11px] font-mono text-slate-500 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-200">
+                                    Last Telemetry Ping: <span className="font-semibold text-slate-700">{activeShipment.lastTelemetryPing}</span>
+                                </div>
                             </div>
 
                             <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
