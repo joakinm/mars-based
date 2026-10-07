@@ -1,0 +1,300 @@
+openapi: 3.1.0
+info:
+  title: MarsLogistics OS - AI Tracking Engine API
+  version: 1.0.0
+  description: RESTful API for managing multimodal shipments, smart timeline telemetry, customs documents, and AI-driven exception triage.
+servers:
+  - url: /api/v1
+paths:
+  /shipments:
+    get:
+      summary: List multimodal shipments
+      description: Returns shipment portfolio. Supports filtering by risk level, transport mode, or search query.
+      parameters:
+        - name: riskLevel
+          in: query
+          schema:
+            $ref: '#/components/schemas/RiskLevel'
+        - name: mode
+          in: query
+          schema:
+            $ref: '#/components/schemas/TransportMode'
+        - name: searchQuery
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of active shipments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shipment'
+
+  /shipments/{id}:
+    get:
+      summary: Get shipment details
+      description: Returns full shipment telemetry including multimodal timeline milestones, customs documents, and AI assessment.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Shipment details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipmentDetail'
+        '404':
+          description: Shipment not found
+
+  /shipments/{id}/triage:
+    post:
+      summary: Execute AI recommended triage action
+      description: Applies assisted action payload, transitions shipment status to IN_TRANSIT, and clears high-risk flags.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Exception mitigated and status updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipmentDetail'
+
+  /shipments/{id}/resolve:
+    post:
+      summary: Manual incident resolution
+      description: Submits an operator audit record to resolve shipment exceptions manually.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuditPayload'
+      responses:
+        '200':
+          description: Incident manually resolved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipmentDetail'
+
+components:
+  schemas:
+    TransportMode:
+      type: string
+      enum: [SEA, ROAD, AIR, RAIL, MULTIMODAL]
+
+    ShipmentStatus:
+      type: string
+      enum: [PENDING, IN_TRANSIT, HELD, EXCEPTION, DELIVERED]
+
+    RiskLevel:
+      type: string
+      enum: [LOW, MEDIUM, HIGH, CRITICAL]
+
+    PrefilledPayload:
+      type: object
+      properties:
+        requiredDocType:
+          type: string
+        emailSubject:
+          type: string
+        emailBody:
+          type: string
+
+    RecommendedAction:
+      type: object
+      required:
+        - actionType
+        - label
+        - description
+      properties:
+        actionType:
+          type: string
+          enum: [UPLOAD_DOCS, NOTIFY_CUSTOMER, ESCALATE_CARRIER, MONITOR]
+        label:
+          type: string
+        description:
+          type: string
+        prefilledPayload:
+          $ref: '#/components/schemas/PrefilledPayload'
+
+    AiAssessment:
+      type: object
+      required:
+        - riskLevel
+        - confidenceScore
+        - isDelayed
+        - predictedDelayHours
+        - confirmedEta
+        - predictedEta
+        - summaryText
+      properties:
+        riskLevel:
+          $ref: '#/components/schemas/RiskLevel'
+        confidenceScore:
+          type: number
+          minimum: 0
+          maximum: 1
+        isDelayed:
+          type: boolean
+        predictedDelayHours:
+          type: integer
+        confirmedEta:
+          type: string
+          format: date-time
+        predictedEta:
+          type: string
+          format: date-time
+        exceptionReason:
+          type: string
+        summaryText:
+          type: string
+        recommendedAction:
+          $ref: '#/components/schemas/RecommendedAction'
+
+    MilestoneEvent:
+      type: object
+      required:
+        - id
+        - category
+        - name
+        - location
+        - timestamp
+        - status
+        - carrierName
+        - rawStatusDescription
+      properties:
+        id:
+          type: string
+        category:
+          type: string
+        name:
+          type: string
+        location:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [PENDING, IN_PROGRESS, COMPLETED, FAILED]
+        carrierName:
+          type: string
+        rawStatusDescription:
+          type: string
+
+    Document:
+      type: object
+      required:
+        - id
+        - title
+        - type
+        - status
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+          enum: [COMMERCIAL_INVOICE, CUSTOMS_DECLARATION, BILL_OF_LADING, PACKING_LIST]
+        status:
+          type: string
+          enum: [VERIFIED, PENDING_REVIEW, REJECTED]
+        uploadedAt:
+          type: string
+          format: date-time
+
+    Shipment:
+      type: object
+      required:
+        - id
+        - orderReference
+        - customerId
+        - customerName
+        - originSite
+        - destinationCity
+        - destinationCountry
+        - mode
+        - currentStatus
+        - primaryCarrier
+        - lastTelemetryPing
+        - aiAssessment
+      properties:
+        id:
+          type: string
+        orderReference:
+          type: string
+        customerId:
+          type: string
+        customerName:
+          type: string
+        originSite:
+          type: string
+        destinationCity:
+          type: string
+        destinationCountry:
+          type: string
+        mode:
+          $ref: '#/components/schemas/TransportMode'
+        currentStatus:
+          $ref: '#/components/schemas/ShipmentStatus'
+        primaryCarrier:
+          type: string
+        lastTelemetryPing:
+          type: string
+          format: date-time
+        aiAssessment:
+          $ref: '#/components/schemas/AiAssessment'
+
+    ShipmentDetail:
+      allOf:
+        - $ref: '#/components/schemas/Shipment'
+        - type: object
+          required:
+            - documents
+            - events
+          properties:
+            documents:
+              type: array
+              items:
+                $ref: '#/components/schemas/Document'
+            events:
+              type: array
+              items:
+                $ref: '#/components/schemas/MilestoneEvent'
+
+    AuditPayload:
+      type: object
+      required:
+        - action
+        - user
+        - timestamp
+      properties:
+        action:
+          type: string
+        user:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        comments:
+          type: string
