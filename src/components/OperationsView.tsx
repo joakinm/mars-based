@@ -138,8 +138,8 @@ export const OperationsView: React.FC = () => {
 
             {/* 3. Shipment Portfolio Table */}
             <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs border-collapse">
+                <div className="w-full overflow-x-auto">
+                    <table className="w-full min-w-[640px] text-left text-xs border-collapse">
                         <thead>
                             <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold tracking-wider uppercase text-[10px]">
                                 <th className="py-3 px-4">Shipment / Reference</th>

@@ -5,7 +5,7 @@ import { CustomerView } from './components/CustomerView';
 
 function DashboardRouter() {
   const { role } = useShipments();
-  return <main className="max-w-7xl mx-auto px-6 py-6">{role === 'OPERATIONS' ? <OperationsView /> : <CustomerView />}</main>;
+  return <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">{role === 'OPERATIONS' ? <OperationsView /> : <CustomerView />}</main>;
 }
 
 export default function App() {
